@@ -24,7 +24,7 @@ def configure(ctx):
     ctx.env.CXXFLAGS = list(ctx.env.CFLAGS)
     ctx.env.CXXFLAGS.remove('-std=c99')
     sdk_folder = ctx.root.find_dir(ctx.env['PEBBLE_SDK'])
-    ctx.env.CXXFLAGS.extend(['-std=c++11', '-fPIE', '-fno-unwind-tables', '-fno-exceptions'])
+    ctx.env.CXXFLAGS.extend(['-std=gnu++11', '-fPIE', '-fno-unwind-tables', '-fno-exceptions', '-mthumb', '-mno-thumb-interwork', '-mfpu=fpv4-sp-d16', '-mfloat-abi=softfp', '-fno-threadsafe-statics'])
 
 def build(ctx):
     ctx.load('pebble_sdk')
@@ -37,7 +37,9 @@ def build(ctx):
         ctx.set_env(ctx.all_envs[p])
         ctx.set_group(ctx.env.PLATFORM_NAME)
         app_elf='{}/pebble-app.elf'.format(ctx.env.BUILD_DIR)
-        ctx.pbl_program(source=ctx.path.ant_glob('src/**/*.c') + ctx.path.ant_glob('src/**/*.cpp'), target=app_elf)
+        ctx.pbl_program(source=ctx.path.ant_glob('src/**/*.c') + ctx.path.ant_glob('src/**/*.cpp'), 
+        includes=[],
+        target=app_elf)
 
         if build_worker:
             worker_elf='{}/pebble-worker.elf'.format(ctx.env.BUILD_DIR)
