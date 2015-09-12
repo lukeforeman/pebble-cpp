@@ -24,7 +24,7 @@ def configure(ctx):
     ctx.env.CXXFLAGS = list(ctx.env.CFLAGS)
     ctx.env.CXXFLAGS.remove('-std=c99')
     sdk_folder = ctx.root.find_dir(ctx.env['PEBBLE_SDK'])
-    ctx.env.CXXFLAGS.extend(['-std=gnu++11', '-fPIE', '-fno-unwind-tables', '-fno-exceptions', '-mthumb', '-mno-thumb-interwork', '-mfpu=fpv4-sp-d16', '-mfloat-abi=softfp', '-fno-threadsafe-statics'])
+    ctx.env.CXXFLAGS.extend(['-std=gnu++11', '-fPIE', '-fno-unwind-tables', '-fno-exceptions', '-Wl,--stack,200', '-fno-threadsafe-statics'])
 
 def build(ctx):
     ctx.load('pebble_sdk')
